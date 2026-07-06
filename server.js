@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const mobiesRouter = require('./routes/mobies');
+const notFound = require('./middlewares/notFound');
+const serverError = require('./middlewares/serverError');
 
 
 app.listen(PORT, () => {
@@ -14,3 +16,9 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/mobies', mobiesRouter);
+
+
+app.use(serverError);
+
+
+app.use(notFound);
