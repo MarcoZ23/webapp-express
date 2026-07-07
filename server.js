@@ -4,6 +4,11 @@ const PORT = process.env.PORT || 3000;
 const mobiesRouter = require('./routes/mobies');
 const notFound = require('./middlewares/notFound');
 const serverError = require('./middlewares/serverError');
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+}));
 
 
 app.listen(PORT, () => {

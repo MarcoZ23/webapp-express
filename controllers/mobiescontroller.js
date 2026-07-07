@@ -1,12 +1,40 @@
+const connection = require('../database/connection');
 
 const index = (req, res) => {
-    res.send('You requested all mobies');
+    connection.query('SELECT * FROM movies', (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Error occurred while fetching movies');
+        } else {
+            res.json(results);
+        }
+    });
 };
 
 const show = (req, res) => {
     const id = parseInt(req.params.id);
-    res.send(`You requested mobie with ID: ${id}`);
-}
+    connection.query('SELECT * FROM movies WHERE id = ?', [id], (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Error occurred while fetching movie');
+        }
+        if (results.length === 0) {
+            return res.status(404).send('Movie not found');
+        }
+        const movie = results[0];
+        connection.query(
+            'SELECT * FROM reviews WHERE movie_id = ?', [id], (error, reviews) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send('Error occurred while fetching reviews');
+                }
+                movie.reviews = reviews;
+                res.json(movie);
+            }
+        );
+    }
+    );
+};
 
 module.exports = {
     index,
