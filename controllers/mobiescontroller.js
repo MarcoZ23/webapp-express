@@ -36,7 +36,21 @@ const show = (req, res) => {
     );
 };
 
+const store = (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, vote, text } = req.body;
+    const sql = 'INSERT INTO reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [id, name, vote, text], (error, results) => {
+        if (error) {
+
+            return res.status(500).json('Error occurred while adding review');
+        }
+        res.status(201).json({ message: 'Review added successfully', reviewId: results.insertId });
+    });
+};
+
 module.exports = {
     index,
-    show
+    show,
+    store
 };

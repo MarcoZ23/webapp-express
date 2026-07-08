@@ -7,4 +7,6 @@ router.get('/', mobiesController.index);
 
 router.get('/:id', mobiesController.show);
 
+router.post('/:id/reviews', mobiesController.store);
+
 module.exports = router;

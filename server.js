@@ -10,10 +10,13 @@ app.use(cors({
     origin: 'http://localhost:5173',
 }));
 
+app.use(express.static('public'));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -27,3 +30,4 @@ app.use(serverError);
 
 
 app.use(notFound);
+
